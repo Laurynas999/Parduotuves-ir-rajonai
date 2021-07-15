@@ -116,8 +116,7 @@ public class PageController {
 			
 		}else {
 			if((!rajonas_id.equals("")) && (!vardas.equals(""))){	//	+|+	jei gauna rajono id ir varda rodo to rajono id, varda, visas priskirtas parduotuves
-				
-				System.out.println(rajonas_id);
+
 				model.addAttribute("vardas",vardas );				//toks turi ateiti is /rajonai (dar neprijungtas redirectas)
 				model.addAttribute("rajonas_id",rajonas_id);
 				

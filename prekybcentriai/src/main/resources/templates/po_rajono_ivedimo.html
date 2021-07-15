@@ -2,7 +2,24 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title >Parduotuves ivedimas</title> 
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+  	
+  	<style>
+	    label, input { display:block; }
+	    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+	    fieldset { padding:0; border:0; margin-top:25px; }
+	    h1 { font-size: 1.2em; margin: .6em 0; }
+	    div#users-contain { width: 350px; margin: 20px 0; }
+	    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+	    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+	    .ui-dialog .ui-state-error { padding: .3em; }
+	    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  	</style>
+  	
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<script>
 		
@@ -10,7 +27,98 @@
 				
 				window.history.replaceState( null, null, window.location.href ); 
 			}  
-	</script>		
+	</script>	
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$( function() {
+		    var dialog, form,
+		 
+			emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+			pard_pav = $( "#pard_pav" ),
+			adresas = $( "#adresas" ),
+			rajonas_id = $( "#rajonas_id" ),
+			prekybinis_plotas = $( "#prekybinis_plotas"),
+			allFields = $( [] ).add( pard_pav ).add( adresas ).add( rajonas_id ).add( prekybinis_plotas ),
+			tips = $( ".validateTips" );
+		 
+		    function updateTips( t ) {
+		    	tips
+		        .text( t )
+		        .addClass( "ui-state-highlight" );
+		     	setTimeout(function() {
+		       		tips.removeClass( "ui-state-highlight", 1500 );
+		      	}, 500 );
+		    }
+		 
+		    function checkLength( o, n, min, max ) {
+		    	if ( o.val().length > max || o.val().length < min ) {
+		        	o.addClass( "ui-state-error" );
+		       		updateTips( "Length of " + n + " must be between " +
+		         	min + " and " + max + "." );
+		       		return false;
+		      	} else {
+		        	return true;
+		     	}
+		    }
+		 
+		    function checkRegexp( o, regexp, n ) {
+		    	if ( !( regexp.test( o.val() ) ) ) {
+		        	o.addClass( "ui-state-error" );
+		       		updateTips( n );
+		        	return false;
+		      	} else {
+		        	return true;
+		     	}
+		    }
+		 
+		    function pridetiParduotuve() {
+		    	var valid = true;
+		     	allFields.removeClass( "ui-state-error" );
+			/*
+			    valid = valid && checkLength( name, "username", 3, 16 );
+			    valid = valid && checkLength( email, "email", 6, 80 );
+			    valid = valid && checkLength( password, "password", 5, 16 );
+			 
+			    valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+			    valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+			    valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+			 */
+			    if ( valid ) {
+			     	form.submit();
+		        	dialog.dialog( "close" );
+				}
+		      	return valid;
+		    }
+		 
+		    dialog = $( "#dialog-form" ).dialog({
+		    	autoOpen: false,
+		      	height: 420,
+		      	width: 350,
+		      	modal: true,
+		      	buttons: {
+		        	"Pridėti parduotuvę": pridetiParduotuve,
+		        	Cancel: function() {
+		          	dialog.dialog( "close" );
+		        	}
+		      	},
+		      	close: function() {
+		        	form[ 0 ].reset();
+		        	allFields.removeClass( "ui-state-error" );
+		      	}
+		    });
+		 
+		    form = dialog.find( "form" );/*.on( "submit", function( event ) {
+		      event.preventDefault();
+		      pridetiParduotuve();
+		    });*/
+		 
+		    $( "#papildyti" ).button().on( "click", function() {
+		      	dialog.dialog( "open" );
+		    });
+	  	});
+ 	 </script>	
 </head>
 
 <body>
@@ -33,39 +141,43 @@
 		</tr>
 	</table>
 	
-	<form action="" method="POST">
-		<div style="border: 5px solid black;display: inline-block; background-color:powderblue;">
-			
-			<b> Parduotuvės pavadinimas:</b><br>
-				<input type="radio" id="pav1" name="pard_pav" value="RIMI">
-					<label for="pard_pav">RIMI</label><br>  
-				<input type="radio" id="pav2" name="pard_pav" value="MAXIMA">
-					<label for="pard_pav">MAXIMA</label><br>  
-				<input type="radio" id="pav3" name="pard_pav" value="IKI">
-					<label for="pard_pav">IKI</label><br>  
-				<input type="radio" id="pav4" name="pard_pav" value="NORFA">
-					<label for="pard_pav">NORFA</label><br>  
-				<input type="radio" id="pav5" name="pard_pav" value="EXPRESS_MARKET">
-					<label for="pard_pav">EXPRESS_MARKET</label><br>  
-			
-			<br><b>Adresas:</b> <br>
-				<input type="text" id="adresas" name="adresas" value="gatvė g. nr, miestas pašto kodas ">
-			
-			<br><br><b>ID rajono:</b><br>
-				 
-					<select disabled name="rajonas_id" id="rajonas_id"  >
+	
+		<div id="dialog-form" title="Prideti parduotuve">
+			<p class="validateTips">Įveskite laukus</p>
+			<form action="" method="POST">
+				<fieldset>
+					<label for="pard_pav">Parduotuves pavadinimas:</label>
 						
-							<option selected th:value="${rajonas}" th:text="${vardas}">	</option>
+						<select name="pard_pav" id="pard_pav"  class="text ui-widget-content ui-corner-all">
+										
+							<option value="RIMI">RIMI</option>
+							<option value="MAXIMA">MAXIMA</option>
+							<option value="IKI">IKI</option>
+							<option value="NORFA">NORFA</option>
+							<option value="EXPRESS_MARKET">EXPRESS_MARKET</option>
+										
+						</select> 
+						
+						<label for="adresas">Adresas:</label>
+					<input type="text" name="adresas" id="adresas" value="gatve g. nr, miestas pašto kodas " class="text ui-widget-content ui-corner-all">
 					
-					</select><br>
-			
-			
-			<br><b> Prekybinis plotas m²:</b><br>
-				<input type="text" id="prekybinis_plotas"  value="Formatu 1.000" name="prekybinis_plotas"><br>
-			
-		  </div>	
-		  
-		  <br><b><input type="submit" name="siusti" id="patvirtinti" class="patvirtinimo" value="Patvirtinti" style="height:50px; width:450px;font-size:25px" ></b><br>
-	</form>
+						<label for="rajonas_id">ID rajono:</label>
+					<select disabled name="rajonas_id" id="rajonas_id"  class="text ui-widget-content ui-corner-all">
+										
+						<option selected th:value="${rajonas}" th:text="${vardas}">	</option>
+									
+					</select> 
+					
+						<label for="prekybinis_plotas">Prekybinis plotas:</label>
+					<input type="text" id="prekybinis_plotas"  value="Formatu 1.000" name="prekybinis_plotas" class="text ui-widget-content ui-corner-all">
+					<input type="hidden" name="siusti" value="Patvirtinti">
+					<input type="submit" tabindex="-1" style="position:absolute; top:-1000px" >
+				</fieldset>
+			</form>
+		</div>
+		
+		<button id="papildyti">Ivesti nauja parduotuve</button>
+		<!-- <br><b><input type="submit" name="siusti" id="patvirtinti" class="patvirtinimo" value="Patvirtinti" style="height:50px; width:450px;font-size:25px" ></b><br> -->
+	
 </body>
 </html> 
