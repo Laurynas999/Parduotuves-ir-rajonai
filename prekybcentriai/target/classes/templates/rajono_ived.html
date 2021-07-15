@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Rajono ivedimas</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		
+			 if ( window.history.replaceState ) {  							//perkrovus puslapį išmeta išsaugotą vedimo info 
+				
+				window.history.replaceState( null, null, window.location.href ); 
+			}  
+	</script>		
+</head>
+
+<body>
+	<h1>Rajonai</h1>
+	
+	<form action="" method="POST">
+		<div style="border: 5px solid black;display: inline-block; background-color:powderblue;">
+			
+			<b> Rajono pavadinimas:</b><br>
+				<input type="text" id="rajono_pav"  value="Rajono pavadinimas" name="pavadinimas"><br>
+			
+			<br><b>Plotas:</b> <br>
+				<input type="text" id="plotas" name="plotas" value="formatu 1.000"><br>
+			
+			<br><b>Gyventojų skaičius:</b><br>
+			<input type="number" id="gyventojai" min="1" max="99999" value="0" name="gyventoju_skaicius">			
+		  </div>	
+		  
+		  <br><b><input type="submit" name="siusti" id="patvirtinti" class="patvirtinimo" value="Patvirtinti" style="height:50px; width:450px;font-size:25px" ></b><br>
+	</form>
+</body>
+</html> 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title >Parduotuves ivedimas</title> 
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		
+			 if ( window.history.replaceState ) {  							//perkrovus puslapį išmeta išsaugotą vedimo info 
+				
+				window.history.replaceState( null, null, window.location.href ); 
+			}  
+	</script>		
+</head>
+
+<body>
+	<h1>Parduotuvės <span th:text="${vardas}"></span></h1>
+	
+	<table cellspacing="3" border="1">
+		<tr>
+			<th>Pavadinimas</th>
+			<th>Rajono ID</th>
+			<th>Adresas</th>
+			<th>Prekybinis plotas</th>
+			<th>Redagavimas</th>
+		</tr>
+		<tr th:each="mano_rez:${parduotuves}"> 
+			<td th:text="${mano_rez.getPard_pav}"></td>
+			<td th:text="${mano_rez.getId_rajono}"></td>
+			<td th:text="${mano_rez.getAdresas}"></td>
+			<td th:text="${mano_rez.getPrekybinis_plotas}"></td>
+			<td>  <button class="redagavimas" id="redag" onclick="redaguojame()" style="width:100px;">Redaguoti</button> </td>
+		</tr>
+	</table>
+	
+	<form action="" method="POST">
+		<div style="border: 5px solid black;display: inline-block; background-color:powderblue;">
+			
+			<b> Parduotuvės pavadinimas:</b><br>
+				<input type="radio" id="pav1" name="pard_pav" value="RIMI">
+					<label for="pard_pav">RIMI</label><br>  
+				<input type="radio" id="pav2" name="pard_pav" value="MAXIMA">
+					<label for="pard_pav">MAXIMA</label><br>  
+				<input type="radio" id="pav3" name="pard_pav" value="IKI">
+					<label for="pard_pav">IKI</label><br>  
+				<input type="radio" id="pav4" name="pard_pav" value="NORFA">
+					<label for="pard_pav">NORFA</label><br>  
+				<input type="radio" id="pav5" name="pard_pav" value="EXPRESS_MARKET">
+					<label for="pard_pav">EXPRESS_MARKET</label><br>  
+			
+			<br><b>Adresas:</b> <br>
+				<input type="text" id="adresas" name="adresas" value="gatvė g. nr, miestas pašto kodas ">
+			
+			<br><br><b>ID rajono:</b><br>
+				 
+					<select disabled name="rajonas_id" id="rajonas_id"  >
+						
+							<option selected th:value="${rajonas}" th:text="${vardas}">	</option>
+					
+					</select><br>
+			
+			
+			<br><b> Prekybinis plotas m²:</b><br>
+				<input type="text" id="prekybinis_plotas"  value="Formatu 1.000" name="prekybinis_plotas"><br>
+			
+		  </div>	
+		  
+		  <br><b><input type="submit" name="siusti" id="patvirtinti" class="patvirtinimo" value="Patvirtinti" style="height:50px; width:450px;font-size:25px" ></b><br>
+	</form>
+</body>
+</html> 

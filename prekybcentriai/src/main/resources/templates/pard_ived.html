@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Parduotuves ivedimas</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		
+			 if ( window.history.replaceState ) {  							//perkrovus puslapį išmeta išsaugotą vedimo info 
+				
+				window.history.replaceState( null, null, window.location.href ); 
+			}  
+	</script>		
+</head>
+
+<body>
+	<h1>Parduotuvės</h1>
+	
+	<form action="" method="POST">
+		<div style="border: 5px solid black;display: inline-block; background-color:powderblue;">
+			
+			<b> Parduotuvės pavadinimas:</b><br>
+				<input type="radio" id="pav1" name="pard_pav" value="RIMI">
+					<label for="pard_pav">RIMI</label><br>  
+				<input type="radio" id="pav2" name="pard_pav" value="MAXIMA">
+					<label for="pard_pav">MAXIMA</label><br>  
+				<input type="radio" id="pav3" name="pard_pav" value="IKI">
+					<label for="pard_pav">IKI</label><br>  
+				<input type="radio" id="pav4" name="pard_pav" value="NORFA">
+					<label for="pard_pav">NORFA</label><br>  
+				<input type="radio" id="pav5" name="pard_pav" value="EXPRESS_MARKET">
+					<label for="pard_pav">EXPRESS_MARKET</label><br>  
+					
+																					<!--Pasiimimo is db pavyzdys
+																						<b> Parduotuvės pavadinimas:</b><br>
+																					<div th:each="mano_rez:${rajonas}">
+																						<input  type="radio" id="${mano_rez.getId}" name="pard_pav" th:value="${mano_rez.getinamKoNorim}" >
+																						<span th:text="${mano_rez.getPavadinimas}"></span>
+																						
+																					</div> -->
+			
+			<br><b>Adresas:</b> <br>
+				<input type="text" id="adresas" name="adresas" value="gatvė g. nr, miestas pašto kodas ">
+			
+			<br><br><b>ID rajono:</b><br>
+				 
+					<select name="id_rajono" id="id_rajono" >
+						
+							<option th:each="mano_rez:${rajonas}" th:value="${mano_rez.getId}" th:text="${mano_rez.getPavadinimas}">
+								
+							</option>
+					
+					</select><br>
+			
+			<br><b> Prekybinis plotas m²:</b><br>
+				<input type="text" id="prekybinis_plotas"  value="Formatu 1.000" name="prekybinis_plotas"><br>
+			
+		  </div>	
+		  
+		  <br><b><input type="submit" name="siusti" id="patvirtinti" class="patvirtinimo" value="Patvirtinti" style="height:50px; width:450px;font-size:25px" ></b><br>
+	</form>
+</body>
+</html> 

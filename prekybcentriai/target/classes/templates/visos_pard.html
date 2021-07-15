@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Parduotuvės</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		
+			 if ( window.history.replaceState ) {  							//perkrovus puslapį išmeta išsaugotą vedimo info 
+				
+				window.history.replaceState( null, null, window.location.href ); 
+			}  
+			
+			function redaguojame() {
+			}
+	</script>		
+</head>
+
+<body>
+	<h1>Visos parduotuvės</h1>
+	
+	<table cellspacing="3" border="1">
+		<tr>
+			<th>Pavadinimas</th>
+			<th>Rajono ID</th>
+			<th>Adresas</th>
+			<th>Prekybinis plotas</th>
+			<th>Redagavimas</th>
+		</tr>
+		<tr th:each="mano_rez:${visa_pard_info}"> 
+			<td th:text="${mano_rez.getPard_pav}"></td>
+			<td th:text="${mano_rez.getId_rajono}"></td>
+			<td th:text="${mano_rez.getAdresas}"></td>
+			<td th:text="${mano_rez.getPrekybinis_plotas}"></td>
+			<td>  <button class="redagavimas" id="redag" onclick="redaguojame()" style="width:100px;">Redaguoti</button> </td>
+		</tr>
+	</table>
+	
+
+</body>
+</html> 
