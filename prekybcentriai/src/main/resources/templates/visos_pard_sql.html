@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Parduotuvės SQL</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	
+  	<style>
+	    label, input { display:block; }
+	    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+	    fieldset { padding:0; border:0; margin-top:25px; }
+	    h1 { font-size: 1.2em; margin: .6em 0; }
+	    div#users-contain { width: 350px; margin: 20px 0; }
+	    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+	    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+	    .ui-dialog .ui-state-error { padding: .3em; }
+  	</style>
+  	
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script>
+		
+			 if ( window.history.replaceState ) {  							//perkrovus puslapį išmeta išsaugotą vedimo info 
+				
+				window.history.replaceState( null, null, window.location.href ); 
+			}  
+			
+			function redaguojame() {
+			}
+	</script>	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$( function() {
+			var dialog, form,
+		 
+			pard_pav = $( "#pard_pav" ),
+			allFields = $( [] ).add( pard_pav );
+			
+			$( "#pasirinkti" ).button().on( "click", function() {
+		      	dialog.dialog( "open" );
+		    });
+		    
+		    dialog = $( "#dialog-form" ).dialog({
+		   		autoOpen: false,
+		      	height: 200,
+		      	width: 300,
+		      	modal: true,
+		      	buttons: {
+		        	"Pasirinkti tinklą": pridetiParduotuve,
+		        	Cancel: function() {
+		          		dialog.dialog( "close" );
+		        	}
+		      	},
+		      	close: function() {
+		        	form[ 0 ].reset();
+		        	allFields.removeClass( "ui-state-error" );
+		      	}
+		    }); 
+		 
+		    function checkRegexp( o, regexp, n ) {
+		    	if ( !( regexp.test( o.val() ) ) ) {
+		        	o.addClass( "ui-state-error" );
+		       		updateTips( n );
+		        	return false;
+		      	} else {
+		        	return true;
+		     	}
+		    }
+		 
+		    function pridetiParduotuve() {
+		    
+		     	allFields.removeClass( "ui-state-error" );
+			     form.submit();
+		        dialog.dialog( "close" );
+
+		    }
+		 
+		    form = dialog.find( "form" );
+		 
+	  	});
+ 	 </script>	
+</head>
+
+<body>
+	<h1>Visos parduotuvės su SQL</h1>
+	
+	<table cellspacing="3" border="1">
+		<tr>
+			<th>Parduotuve</th>
+			<th>Rajonas</th>
+			<th>Adresas</th>
+			<th>Prekybinis plotas</th>
+			<th>Redagavimas</th>
+		</tr>
+		<tr th:each="mano_rez:${ataskaita}"> 
+			<td th:text="${mano_rez[0]}"></td>
+			<td th:text="${mano_rez[1]}"></td>
+			<td th:text="${mano_rez[2]}"></td>
+			<td th:text="${mano_rez[3]}"></td>
+			<td>  <button class="redagavimas" id="redag" onclick="redaguojame()" style="width:100px;">Redaguoti</button> </td>
+		</tr>
+	</table>
+	
+	<div id="dialog-form" title="Filtruoti pagal parduotuvę" >
+		
+			<form action="" method="POST">
+				<fieldset>
+					<label for="rajonas">Parduotuves pavadinimas:</label>
+						
+					<select name="rajonas" id="rajonas"  class="text ui-widget-content ui-corner-all">
+						
+						<option value="VISOS">VISOS</option>				
+						<option value="RIMI">RIMI</option>
+						<option value="MAXIMA">MAXIMA</option>
+						<option value="IKI">IKI</option>
+						<option value="NORFA">NORFA</option>
+						<option value="EXPRESS_MARKET">EXPRESS_MARKET</option>
+										
+					</select> 
+					<input type="hidden" name="siusti" value="Patvirtinti">
+					<input type="submit" tabindex="-1" style="position:absolute; top:-1000px" >
+				
+				</fieldset>
+			</form>
+	</div>
+		
+		<button id="pasirinkti">Filtruoti pagal parduotuve</button>
+	
+
+</body>
+</html> 

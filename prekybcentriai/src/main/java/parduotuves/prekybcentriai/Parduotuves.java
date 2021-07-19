@@ -12,7 +12,11 @@ public class Parduotuves {
     private String pard_pav;
     private String adresas;
 	private Integer idRajono;
-	private Double prekybinis_plotas;		
+	private Double prekybinis_plotas;	
+	
+	@ManyToOne
+	@JoinColumn(name="idRajono", referencedColumnName="id", insertable=false, updatable=false)
+	private Rajonas rajonas;
 
 	public Parduotuves() {
 		

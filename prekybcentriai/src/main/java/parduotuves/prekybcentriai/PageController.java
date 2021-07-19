@@ -4,17 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -24,6 +24,9 @@ public class PageController {
 	private ParduotuvesRepository parduotuves_repository;
 	@Autowired
 	private RajonasRepository rajonai_repository;
+	
+	@Autowired 
+	EntityManagerFactory factory;	
 	
 	@RequestMapping(path="/")	
 	public  String pradzia() {
@@ -236,5 +239,37 @@ public class PageController {
 		}
 	}
 	
+	// @Bean
+	public SessionFactory sessionFactory() {
+
+		if (factory.unwrap(SessionFactory.class) == null) {
+			throw new NullPointerException("factory is not a hibernate factory");
+		}
+		return factory.unwrap(SessionFactory.class);
+	}	
 	
+	@RequestMapping(path="/ataskaita", method={ RequestMethod.GET, RequestMethod.POST })
+	public String recipeReport ( 
+			
+			@RequestParam(name="rajonas", required=true, defaultValue="-") String rajonas,
+			
+			@RequestParam(name="siusti", required =true, defaultValue="")String siusti,
+			
+			Model model) throws IOException{
+		String url = "visos_pard_sql";
+		Iterable<Ataskaita> atsiskaitymas;
+		
+		Session session = this.sessionFactory().openSession();
+		AtaskaitaGalutinis ataskaita_galutinis =  new AtaskaitaGalutinis( session );
+		
+		if(siusti != null && siusti.equals("Patvirtinti")) {
+			atsiskaitymas = ataskaita_galutinis.tinkloFiltravimas(rajonas);
+		}else {
+			atsiskaitymas = ataskaita_galutinis.tinkloFiltravimas(null);
+		}
+		
+		model.addAttribute("ataskaita", atsiskaitymas);
+		
+		return url;
+	}
 }

@@ -1,5 +1,7 @@
 package parduotuves.prekybcentriai;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,10 @@ public class Rajonas {	//turi sutapti su DB lenteles pavadinimu
     private String pavadinimas;
     private Double plotas;
 	private Integer gyventoju_skaicius;	
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "idRajono",referencedColumnName="id",insertable=false, updatable=false)
+	private List<Parduotuves> parduotuve;  
 
 	public Rajonas() {
 		
